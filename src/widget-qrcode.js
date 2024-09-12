@@ -8,19 +8,13 @@ class WidgetQRCode extends HTMLElement {
         this.attachShadow({mode:'open'});
     }
     static get observedAttributes(){
-        return ['value','template','level','width','height','logo','text','text-color','text-stroke','foreground-image','background-image','foreground-color','background-color','inner-color','outer-color'];
+        return ['value','eye','point','level','width','height','logo','text','text-color','text-stroke','foreground-image','background-image','foreground-color','background-color','inner-color','outer-color'];
     }
     get value(){
         return this.getAttribute('value')||'https://passer-by.com/';
     }
     set value(value){
         return this.setAttribute('value',value);
-    }
-    get template(){
-        return this.getAttribute('template')||'default';
-    }
-    set template(value){
-        return this.setAttribute('template',value);
     }
     get level(){
         return this.getAttribute('level')||'H';
@@ -100,6 +94,18 @@ class WidgetQRCode extends HTMLElement {
     set outerColor(value){
         return this.setAttribute('outer-color',value);
     }
+    get eye(){
+        return this.getAttribute('eye')||'';
+    }
+    set eye(value){
+        return this.setAttribute('eye',value);
+    }
+    get point(){
+        return this.getAttribute('point')||'';
+    }
+    set point(value){
+        return this.setAttribute('point',value);
+    }
     attributeChangedCallback(name, oldValue, newValue){
         if(oldValue!=newValue){
             this.context&&this.drawQRCode();
@@ -167,7 +173,7 @@ class WidgetQRCode extends HTMLElement {
         let level =_.logo?'H':_.level;
         let data = QRCode(_.value, level);
         _.context.clearRect(0,0,_.$canvas.width,_.$canvas.height);
-        (Draw[_.template]||Draw['default'])(_.context, data, {
+        Draw(_.context, data, {
             'foregroundImage':_.foregroundImage,
             'backgroundImage':_.backgroundImage,
             'foregroundColor':_.foregroundColor,
@@ -177,7 +183,9 @@ class WidgetQRCode extends HTMLElement {
             'logo':_.logo,
             'text':_.text,
             'textColor':_.textColor,
-            'textStroke':_.textStroke
+            'textStroke':_.textStroke,
+            'eye': _.eye,
+            'point': _.point
         });
     }
 }

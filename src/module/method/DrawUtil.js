@@ -100,9 +100,9 @@ export default function(context,data,options) {
             }
         },
         // 图片笔刷
-        getImageBrush:function(image,fill='default'){
+        getImageBrush:function(image,fill='full'){
             let brush;
-            if(image.width>context.canvas.width||image.height>context.canvas.height){
+            if(image.width>context.canvas.width||image.height>context.canvas.height||fill==='full'){
                 let $canvas = document.createElement('canvas');
                 let contextTemp = $canvas.getContext('2d');
                 if(image.width>context.canvas.width&&image.height>context.canvas.height){
@@ -122,7 +122,7 @@ export default function(context,data,options) {
                         $canvas.height = context.canvas.height;
                     }
                 }
-                contextTemp.drawImage(image,0,0,$canvas.width,$canvas.height);
+                contextTemp.drawImage(image,-6,-6,$canvas.width,$canvas.height);
                 brush = context.createPattern($canvas,'repeat');
             }else{
                 brush = context.createPattern(image,'repeat');
