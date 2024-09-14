@@ -50,7 +50,7 @@ const drawQrcode = {
     'point_stroke':point_stroke
 };
 
-export default function(context,data,options){
+export default (context,data,options, that) => {
     let len = data.length;
     let margin = context.canvas.width*0.05;
     let pxWidth = (context.canvas.width-2*margin)/len;
@@ -67,8 +67,8 @@ export default function(context,data,options){
     if(options.logo){
         resourcesMap['logo'] = options.logo;
     }
-    
-    api.imageReady(resourcesMap).then(function(resources){
+
+    api.imageReady(resourcesMap).then((resources) => {
         let backgroundColor = options.backgroundColor||'#ffffff';
         let foregroundColor = options.foregroundColor||'#000000';
         let colors = foregroundColor.split(',');
@@ -115,10 +115,16 @@ export default function(context,data,options){
         drawQrcode[`point_${options.point || 'default'}`](context,data,options,resources);
         context.restore();
         context.save();
-        api.setText();
+        // api.setText();
         if(resources.logo){
             api.setLogo(resources.logo);
         }
         context.restore();
+
+        that.dispatchEvent(new CustomEvent('image-ready', {
+            detail: {},
+            bubbles: true,
+            composed: true
+        }));
     });
 };

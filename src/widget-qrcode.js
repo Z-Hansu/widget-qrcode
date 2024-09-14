@@ -186,7 +186,7 @@ class WidgetQRCode extends HTMLElement {
             'textStroke':_.textStroke,
             'eye': _.eye,
             'point': _.point
-        });
+        }, _);
     }
 }
 
